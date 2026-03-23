@@ -365,8 +365,6 @@ class BigVGAN(
         revision: str,
         cache_dir: str,
         force_download: bool,
-        proxies: Optional[Dict] = None,
-        resume_download: bool = False,
         local_files_only: bool,
         token: Union[str, bool, None],
         map_location: str = "cpu",  # Additional argument
@@ -384,14 +382,6 @@ class BigVGAN(
             token=token,
             local_files_only=local_files_only,
         )
-        # proxies and resume_download were removed in huggingface_hub 1.0
-        # Only include them for backwards compatibility with older versions
-        import inspect
-        hf_download_params = inspect.signature(hf_hub_download).parameters
-        if "proxies" in hf_download_params:
-            hf_hub_kwargs["proxies"] = proxies
-        if "resume_download" in hf_download_params:
-            hf_hub_kwargs["resume_download"] = resume_download
 
         # Download and load hyperparameters (h) used by BigVGAN
         if os.path.isdir(model_id):
